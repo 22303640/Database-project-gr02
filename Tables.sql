@@ -102,7 +102,7 @@ CREATE TABLE Flight (
 );
 
 CREATE TABLE Maintenance_Record (
-    maintenance_id INT PRIMARY KEY,
+    PRIMARY KEY (plane_no, maintenance_id),
     plane_no INT,
     technician_ssn INT,
     maintenance_date DATE,
