@@ -16,7 +16,7 @@ CREATE TABLE Airplane (
     plane_no INT PRIMARY KEY,
     model_no VARCHAR(50),
     capacity INT CHECK (capacity > 0),
-    manufacture_year YEAR,
+    manufacture_year INT,
     total_flight_hours INT DEFAULT 0 CHECK (total_flight_hours >= 0),
     status VARCHAR(30),
 
@@ -36,7 +36,7 @@ CREATE TABLE Parking (
     in_time DATETIME,
     out_time DATETIME,
 
-    PRIMARY KEY (plane_no, in_time),
+    PRIMARY KEY (plane_no, hangar_no, in_time),
 
     FOREIGN KEY (plane_no)
     REFERENCES Airplane(plane_no),
@@ -67,7 +67,6 @@ CREATE TABLE Employee (
 
 CREATE TABLE Airport_Staff (
     ssn INT PRIMARY KEY,
-    department VARCHAR(50),
 
     FOREIGN KEY (ssn)
     REFERENCES Employee(ssn)
@@ -114,15 +113,13 @@ CREATE TABLE Flight (
 );
 
 CREATE TABLE Maintenance_Record (
-    maintenance_id INT,
+    maintenance_id INT PRIMARY KEY,
     plane_no INT,
     technician_ssn INT,
     maintenance_date DATE,
     maintenance_type VARCHAR(100),
     cost DECIMAL(10,2),
     notes TEXT,
-
-    PRIMARY KEY (plane_no, maintenance_id),
 
     FOREIGN KEY (plane_no)
     REFERENCES Airplane(plane_no),
