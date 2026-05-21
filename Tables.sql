@@ -3,6 +3,7 @@ CREATE TABLE Airline (
     airline_name VARCHAR(100),
     country VARCHAR(50)
 );
+
 CREATE TABLE Plane_Model (
     model_no VARCHAR(50) PRIMARY KEY,
     manufacturer VARCHAR(100),
@@ -10,10 +11,11 @@ CREATE TABLE Plane_Model (
     engine_type VARCHAR(50),
     fuel_capacity INT
 );
+
 CREATE TABLE Airplane (
     plane_no INT PRIMARY KEY,
     model_no VARCHAR(50),
-    capacity INT  CHECK (capacity > 0),
+    capacity INT CHECK (capacity > 0),
     manufacture_year YEAR,
     total_flight_hours INT DEFAULT 0 CHECK (total_flight_hours >= 0),
     status VARCHAR(30),
@@ -33,15 +35,22 @@ CREATE TABLE Parking (
     hangar_no INT,
     in_time DATETIME,
     out_time DATETIME,
+
     PRIMARY KEY (plane_no, in_time),
-    FOREIGN KEY (plane_no) REFERENCES Airplane(plane_no),
-    FOREIGN KEY (hangar_no) REFERENCES Hangar(hangar_no)
+
+    FOREIGN KEY (plane_no)
+    REFERENCES Airplane(plane_no),
+
+    FOREIGN KEY (hangar_no)
+    REFERENCES Hangar(hangar_no)
 );
+
 CREATE TABLE Union_Info (
     union_no VARCHAR(50) PRIMARY KEY,
     union_name VARCHAR(100),
     office_location VARCHAR(100)
 );
+
 CREATE TABLE Employee (
     ssn INT PRIMARY KEY,
     first_name VARCHAR(50),
@@ -51,6 +60,7 @@ CREATE TABLE Employee (
     salary DECIMAL(10,2),
     hire_date DATE,
     union_no VARCHAR(50),
+
     FOREIGN KEY (union_no)
     REFERENCES Union_Info(union_no)
 );
@@ -65,7 +75,9 @@ CREATE TABLE Airport_Staff (
 
 CREATE TABLE Technician (
     ssn INT PRIMARY KEY,
-    FOREIGN KEY (ssn) REFERENCES Employee(ssn)
+
+    FOREIGN KEY (ssn)
+    REFERENCES Employee(ssn)
 );
 
 CREATE TABLE Technician_Expertise (
@@ -102,13 +114,15 @@ CREATE TABLE Flight (
 );
 
 CREATE TABLE Maintenance_Record (
-    PRIMARY KEY (plane_no, maintenance_id),
+    maintenance_id INT,
     plane_no INT,
     technician_ssn INT,
     maintenance_date DATE,
     maintenance_type VARCHAR(100),
     cost DECIMAL(10,2),
     notes TEXT,
+
+    PRIMARY KEY (plane_no, maintenance_id),
 
     FOREIGN KEY (plane_no)
     REFERENCES Airplane(plane_no),
@@ -132,14 +146,23 @@ CREATE TABLE Testing_Event (
     test_date DATE,
     hours_spent INT,
     score INT CHECK (score BETWEEN 0 AND 100),
+
     PRIMARY KEY (plane_no, ssn, test_id, test_date),
-    FOREIGN KEY (plane_no) REFERENCES Airplane(plane_no),
-    FOREIGN KEY (ssn) REFERENCES Technician(ssn),
-    FOREIGN KEY (test_id) REFERENCES Test(test_id)
+
+    FOREIGN KEY (plane_no)
+    REFERENCES Airplane(plane_no),
+
+    FOREIGN KEY (ssn)
+    REFERENCES Technician(ssn),
+
+    FOREIGN KEY (test_id)
+    REFERENCES Test(test_id)
 );
 
 CREATE TABLE Traffic_Controller (
     ssn INT PRIMARY KEY,
     last_medical_exam DATE,
-    FOREIGN KEY (ssn) REFERENCES Employee(ssn)
+
+    FOREIGN KEY (ssn)
+    REFERENCES Employee(ssn)
 );
