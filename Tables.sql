@@ -7,16 +7,16 @@ CREATE TABLE Airline (
 CREATE TABLE Plane_Model (
     model_no VARCHAR(50) PRIMARY KEY,
     manufacturer VARCHAR(100),
-    max_capacity INT,
+    max_capacity INT CHECK (max_capacity > 0),
     engine_type VARCHAR(50),
-    fuel_capacity INT
+    fuel_capacity INT CHECK (fuel_capacity > 0)
 );
 
 CREATE TABLE Airplane (
     plane_no INT PRIMARY KEY,
     model_no VARCHAR(50),
     capacity INT CHECK (capacity > 0),
-    manufacture_year INT,
+    manufacture_year YEAR,
     total_flight_hours INT DEFAULT 0 CHECK (total_flight_hours >= 0),
     status VARCHAR(30),
 
@@ -43,6 +43,8 @@ CREATE TABLE Parking (
 
     FOREIGN KEY (hangar_no)
     REFERENCES Hangar(hangar_no)
+
+    CHECK (out_time IS NULL OR out_time > in_time)
 );
 
 CREATE TABLE Union_Info (
@@ -57,9 +59,9 @@ CREATE TABLE Employee (
     last_name VARCHAR(50),
     phone VARCHAR(20),
     email VARCHAR(100) UNIQUE,
-    salary DECIMAL(10,2),
+    salary DECIMAL(10,2) CHECK (salary >= 0),
     hire_date DATE,
-    union_no VARCHAR(50),
+    union_no VARCHAR(50) NOT NULL,
 
     FOREIGN KEY (union_no)
     REFERENCES Union_Info(union_no)
@@ -67,6 +69,7 @@ CREATE TABLE Employee (
 
 CREATE TABLE Airport_Staff (
     ssn INT PRIMARY KEY,
+    department VARCHAR(50),
 
     FOREIGN KEY (ssn)
     REFERENCES Employee(ssn)
@@ -100,7 +103,7 @@ CREATE TABLE Flight (
     arrival_airport VARCHAR(100),
     departure_time DATETIME,
     arrival_time DATETIME,
-    status VARCHAR(30),
+    status VARCHAR(30) CHECK (status IN ('Scheduled', 'Delayed', 'Cancelled', 'Completed', 'Active')),
     airline_id INT,
 
     CHECK (arrival_time > departure_time),
@@ -141,7 +144,7 @@ CREATE TABLE Testing_Event (
     ssn INT,
     test_id INT,
     test_date DATE,
-    hours_spent INT,
+    hours_spent INT CHECK (hours_spent > 0),
     score INT CHECK (score BETWEEN 0 AND 100),
 
     PRIMARY KEY (plane_no, ssn, test_id, test_date),
