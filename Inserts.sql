@@ -34,6 +34,7 @@ INSERT INTO Hangar VALUES
 (2, 'South Zone', 15),
 (3, 'East Zone', 8),
 (4, 'West Zone', 12),
+(5, 'VIP Area', 5),
 (5, 'VIP Area', 5);
 
 -- Parking Inserts
